@@ -1,0 +1,227 @@
+openapi: "3.0.1"
+info:
+  title: "콘서트 예약 서비스 API"
+  description: "콘서트 예약 서비스의 API 문서입니다."
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:8080"
+    description: "로컬"
+paths:
+  /api/v1/users/{userId}/balance:
+    get:
+      tags:
+        - "users"
+      summary: "잔액 조회"
+      description: "유저의 잔액을 조회합니다."
+      operationId: "getBalance"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "요청 오류"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Balance"
+        "200":
+          description: "잔액 조회 성공"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Balance"
+    post:
+      tags:
+        - "users"
+      summary: "잔액 추가"
+      description: "유저의 잔액을 추가합니다."
+      operationId: "addBalance"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Add"
+        required: true
+      responses:
+        "400":
+          description: "요청 오류"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Balance"
+        "200":
+          description: "잔액 추가 성공"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Balance"
+  /api/v1/token/api/v1/token:
+    post:
+      tags:
+        - "token"
+      summary: "토큰 발급"
+      description: "유저를 대기열에 등록하고 토큰을 발급합니다."
+      operationId: "issueToken"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TokenRequest"
+        required: true
+      responses:
+        "200":
+          description: "토큰 발급 성공"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        "400":
+          description: "요청 오류"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+  /api/v1/payments:
+    post:
+      tags:
+        - "payments"
+      summary: "결제"
+      description: "결제를 진행합니다."
+      operationId: "pay"
+      parameters:
+        - name: "request"
+          in: "query"
+          required: true
+          schema:
+            $ref: "#/components/schemas/pay"
+      responses:
+        "200":
+          description: "결제 성공"
+          content:
+            "*/*":
+              schema:
+                type: "string"
+        "402":
+          description: "잔액이 부족 합니다."
+          content:
+            "*/*":
+              schema:
+                type: "string"
+        "404":
+          description: "잘못된 예약 아이디 입니다."
+          content:
+            "*/*":
+              schema:
+                type: "string"
+  /api/v1/concerts/seats:
+    get:
+      tags:
+        - "concerts"
+      summary: "공연 좌석 조회"
+      description: "예약 가능한 좌석을 조회합니다."
+      operationId: "seat"
+      parameters:
+        - name: "date"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "date"
+      responses:
+        "400":
+          description: "요청 오류"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AvailableSeat"
+        "200":
+          description: "좌석 조회 성공"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailableSeat"
+  /api/v1/concerts/dates:
+    get:
+      tags:
+        - "concerts"
+      summary: "공연 일자 조회"
+      description: "예약 가능한 일자를 조회합니다."
+      operationId: "date"
+      responses:
+        "400":
+          description: "요청 오류"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AvailableDate"
+        "200":
+          description: "일자 조회 성공"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailableDate"
+components:
+  schemas:
+    Add:
+      type: "object"
+      properties:
+        amount:
+          type: "number"
+    Balance:
+      type: "object"
+      properties:
+        balance:
+          type: "number"
+    TokenRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        phoneNumber:
+          type: "string"
+    TokenResponse:
+      type: "object"
+      properties:
+        token:
+          type: "string"
+        status:
+          type: "string"
+        position:
+          type: "integer"
+          format: "int64"
+    pay:
+      type: "object"
+      properties:
+        reservationId:
+          type: "integer"
+          format: "int64"
+    AvailableSeat:
+      type: "object"
+      properties:
+        seatId:
+          type: "integer"
+          format: "int64"
+        seatNumber:
+          type: "integer"
+          format: "int32"
+        price:
+          type: "number"
+    AvailableDate:
+      type: "object"
+      properties:
+        date:
+          type: "string"
+          format: "date"
