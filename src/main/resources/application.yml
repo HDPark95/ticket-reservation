@@ -28,11 +28,6 @@ springdoc:
     groups:
       enabled: false
     enabled: true
-    swagger-ui:
-      enabled: true
-      path: /
-      tags-sorter: alpha
-      operations-sorter: alpha
 ---
 spring.config.activate.on-profile: local, test
 
