@@ -7,6 +7,5 @@ public interface UserService {
     Optional<User> findById(Long userId);
 
     Optional<User> findByIdForUpdate(Long userId);
-
-    Optional<User> findByPhoneNumber(String phoneNumber);
+    UserResult getUserByPhoneNumber(String phoneNumber);
 }
