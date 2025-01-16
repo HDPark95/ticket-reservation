@@ -1,16 +1,13 @@
 package kr.hhplus.be.server.application.waitingtoken;
 
-import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.util.Asserts;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import kr.hhplus.be.server.application.userpoint.UserNotFoundException;
 import kr.hhplus.be.server.domain.user.User;
+import kr.hhplus.be.server.domain.user.UserNotFoundException;
 import kr.hhplus.be.server.domain.user.UserRepository;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingToken;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenRepository;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenResult;
-import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenService;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
