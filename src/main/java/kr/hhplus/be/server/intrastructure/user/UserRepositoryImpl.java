@@ -16,8 +16,7 @@ import static kr.hhplus.be.server.domain.user.QUser.user;
 public class UserRepositoryImpl implements UserRepository {
 
     private final UserJpaRepository userJpaRepository;
-
-    private final JPAQueryFactory jpaQueryFactory;
+    private final UserQuerydslRepository userQuerydslRepository;
 
     @Override
     public User save(User user) {
@@ -31,13 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByIdForUpdate(Long id) {
-        return Optional.ofNullable(
-                jpaQueryFactory
-                        .selectFrom(user)
-                        .where(user.id.eq(id))
-                        .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                        .fetchOne()
-        );
+        return userQuerydslRepository.findByIdForUpdate(id);
     }
 
     @Override
@@ -47,11 +40,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByPhoneNumber(String phoneNumber) {
-        return Optional.ofNullable(
-                jpaQueryFactory
-                        .selectFrom(user)
-                        .where(user.phoneNumber.eq(phoneNumber))
-                        .fetchOne()
-        );
+        return userQuerydslRepository.findByPhoneNumber(phoneNumber);
     }
 }

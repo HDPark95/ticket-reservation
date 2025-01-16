@@ -22,8 +22,7 @@ import static kr.hhplus.be.server.domain.waitingtoken.QWaitingToken.waitingToken
 public class WaitingTokenRepositoryImpl implements WaitingTokenRepository {
 
     private final WaitingTokenJPARepository waitingTokenJPARepository;
-
-    private final JPAQueryFactory jpaQueryFactory;
+    private final WaitingTokenQuerydslRepository waitingTokenQuerydslRepository;
 
     @Override
     public WaitingToken save(WaitingToken waitingToken) {
@@ -37,49 +36,22 @@ public class WaitingTokenRepositoryImpl implements WaitingTokenRepository {
 
     @Override
     public Optional<WaitingToken> findByUserIdForUpdate(Long userId) {
-        return Optional.ofNullable(jpaQueryFactory
-                .selectFrom(waitingToken)
-                .where(
-                        waitingToken.user.id.eq(userId)
-                )
-                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                .fetchOne());
+        return waitingTokenQuerydslRepository.findByUserIdForUpdate(userId);
     }
 
     @Override
     public Long getPosition(Long userId) {
-        return jpaQueryFactory
-                .select(waitingToken.count().add(1))
-                .from(waitingToken)
-                .where(
-                        waitingToken.status.eq(TokenStatus.WAITING),
-                        waitingToken.id.lt(
-                                jpaQueryFactory
-                                        .select(waitingToken.id)
-                                        .from(waitingToken)
-                                        .where(waitingToken.user.id.eq(userId))
-                        )
-                ).fetchOne();
+        return waitingTokenQuerydslRepository.getPosition(userId);
     }
 
     @Override
     public Optional<WaitingToken> findByUserId(Long userId) {
-        return Optional.ofNullable(jpaQueryFactory
-                .selectFrom(waitingToken)
-                .where(
-                        waitingToken.user.id.eq(userId)
-                )
-                .fetchOne());
+        return waitingTokenQuerydslRepository.findByUserId(userId);
     }
 
     @Override
     public void deleteExpiredTokens(LocalDateTime now) {
-        jpaQueryFactory
-                .delete(waitingToken)
-                .where(
-                        waitingToken.expiredAt.lt(now)
-                )
-                .execute();
+        waitingTokenQuerydslRepository.deleteExpiredTokens(now);
     }
 
     @Override
@@ -89,13 +61,7 @@ public class WaitingTokenRepositoryImpl implements WaitingTokenRepository {
 
     @Override
     public Optional<WaitingToken> findByToken(String token) {
-        return Optional.ofNullable(jpaQueryFactory
-                .selectFrom(waitingToken)
-                .innerJoin(waitingToken.user, user).fetchJoin()
-                .where(
-                        waitingToken.token.eq(token)
-                )
-                .fetchOne());
+        return waitingTokenQuerydslRepository.findByToken(token);
     }
 
     @Override
