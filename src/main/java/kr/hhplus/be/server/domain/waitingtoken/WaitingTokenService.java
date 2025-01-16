@@ -6,4 +6,6 @@ public interface WaitingTokenService {
     void refreshWaitingTokens();
 
     boolean isValid(String waitingToken);
+
+    Long getUserId(String waitingToken);
 }

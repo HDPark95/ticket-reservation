@@ -47,4 +47,11 @@ public class WaitingTokenServiceImpl implements WaitingTokenService {
                 .orElseThrow(() -> new WaitingTokenNotFoundException("유효하지 않은 토큰입니다."));
         return token.validate(clock);
     }
+
+    @Override
+    public Long getUserId(String waitingToken) {
+        return waitingTokenRepository.findByToken(waitingToken)
+                .orElseThrow(() -> new WaitingTokenNotFoundException("유효하지 않은 토큰입니다."))
+                .getUser().getId();
+    }
 }

@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.domain.user;
 
-import kr.hhplus.be.server.application.userpoint.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

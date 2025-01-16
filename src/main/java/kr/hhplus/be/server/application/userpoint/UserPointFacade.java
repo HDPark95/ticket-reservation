@@ -2,7 +2,7 @@ package kr.hhplus.be.server.application.userpoint;
 
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.domain.user.User;
-import kr.hhplus.be.server.domain.user.UserRepository;
+import kr.hhplus.be.server.domain.user.UserNotFoundException;
 import kr.hhplus.be.server.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

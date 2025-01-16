@@ -1,10 +1,6 @@
 package kr.hhplus.be.server.application.userpoint;
 
-import jakarta.transaction.Transactional;
-import kr.hhplus.be.server.domain.user.InsufficientPointsException;
-import kr.hhplus.be.server.domain.user.NegativePointException;
-import kr.hhplus.be.server.domain.user.User;
-import kr.hhplus.be.server.domain.user.UserRepository;
+import kr.hhplus.be.server.domain.user.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

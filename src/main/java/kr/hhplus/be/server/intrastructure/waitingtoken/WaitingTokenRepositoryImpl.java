@@ -3,6 +3,7 @@ package kr.hhplus.be.server.intrastructure.waitingtoken;
 import com.querydsl.core.QueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
+import kr.hhplus.be.server.domain.user.QUser;
 import kr.hhplus.be.server.domain.waitingtoken.TokenStatus;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingToken;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenRepository;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static kr.hhplus.be.server.domain.user.QUser.user;
 import static kr.hhplus.be.server.domain.waitingtoken.QWaitingToken.waitingToken;
 
 @Repository
@@ -89,6 +91,7 @@ public class WaitingTokenRepositoryImpl implements WaitingTokenRepository {
     public Optional<WaitingToken> findByToken(String token) {
         return Optional.ofNullable(jpaQueryFactory
                 .selectFrom(waitingToken)
+                .innerJoin(waitingToken.user, user).fetchJoin()
                 .where(
                         waitingToken.token.eq(token)
                 )
