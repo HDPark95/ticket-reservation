@@ -1,27 +1,27 @@
 package kr.hhplus.be.server.interfaces.api.token;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import kr.hhplus.be.server.application.waitingtoken.WaitingTokenFacade;
+import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenResult;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/token")
 public class TokenController {
 
+    private final WaitingTokenFacade waitingTokenFacade;
+
     @PostMapping(produces = { "application/json" }, consumes = { "application/json" })
     @Operation(summary = "토큰 발급", description = "유저를 대기열에 등록하고 토큰을 발급합니다.", tags={ "token" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "토큰 발급 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class))),
-            @ApiResponse(responseCode = "400", description = "요청 오류") })
-    @RequestMapping(value = "/api/v1/token",
-            produces = { "application/json" },
-            consumes = { "application/json" },
-            method = RequestMethod.POST)
-    public ResponseEntity<TokenResponse> issueToken(@RequestBody TokenRequest request) {
-        return ResponseEntity.ok(new TokenResponse("token", "success", 1L));
+    public ResponseEntity<TokenResponse> issueToken(@RequestBody @Valid TokenRequest request) {
+        WaitingTokenResult issue = waitingTokenFacade.issue(request.phoneNumber());
+        return ResponseEntity.ok(TokenResponse.from(issue));
     }
 }
