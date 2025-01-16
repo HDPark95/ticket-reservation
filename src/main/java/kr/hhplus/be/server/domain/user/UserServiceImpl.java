@@ -28,4 +28,10 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new UserNotFoundException("해당하는 사용자가 없습니다."));
         return UserResult.from(user);
     }
+
+    @Override
+    public User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("해당하는 사용자가 없습니다."));
+    }
 }
