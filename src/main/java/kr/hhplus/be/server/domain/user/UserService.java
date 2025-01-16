@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.domain.user;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public interface UserService {
@@ -9,4 +10,6 @@ public interface UserService {
     UserResult getUserByPhoneNumber(String phoneNumber);
 
     User getUser(Long userId);
+
+    void usePoint(User user, BigDecimal price);
 }

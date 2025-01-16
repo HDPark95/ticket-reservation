@@ -4,6 +4,7 @@ import kr.hhplus.be.server.application.userpoint.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -33,5 +34,10 @@ public class UserServiceImpl implements UserService{
     public User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("해당하는 사용자가 없습니다."));
+    }
+
+    @Override
+    public void usePoint(User user, BigDecimal price) {
+        user.usePoint(price);
     }
 }

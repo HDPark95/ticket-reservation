@@ -9,4 +9,8 @@ public interface ReservationService {
     List<Reservation> getValidReservationsByScheduleId(Long scheduleId);
 
     Reservation reserve(User user, Seat seat) ;
+
+    Reservation getReservation(Long reservationId);
+
+    void complete(Reservation reservation);
 }
