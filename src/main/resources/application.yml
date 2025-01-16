@@ -28,6 +28,11 @@ springdoc:
     groups:
       enabled: false
     enabled: true
+logging:
+  log-file-path: C:/concert/logs
+  log-file-name: concert-console-logs
+  level:
+    root: info
 ---
 spring.config.activate.on-profile: local, test
 
