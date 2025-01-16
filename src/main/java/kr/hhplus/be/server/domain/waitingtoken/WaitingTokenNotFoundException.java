@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.domain.waitingtoken;
 
-public class WaitingTokenNotFoundException extends RuntimeException {
+import kr.hhplus.be.server.domain.core.NotFoundException;
+
+public class WaitingTokenNotFoundException extends NotFoundException {
     public WaitingTokenNotFoundException(String message) {
         super(message);
     }

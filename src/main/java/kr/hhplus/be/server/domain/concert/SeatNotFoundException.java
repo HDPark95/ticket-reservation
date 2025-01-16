@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.domain.concert;
 
-public class SeatNotFoundException extends RuntimeException {
+import kr.hhplus.be.server.domain.core.NotFoundException;
+
+public class SeatNotFoundException extends NotFoundException {
     public SeatNotFoundException(String message) {
         super(message);
     }
