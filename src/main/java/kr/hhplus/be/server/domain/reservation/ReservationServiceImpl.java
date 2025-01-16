@@ -26,6 +26,10 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     @Transactional
     public Reservation reserve(User user, Seat seat) {
+        reservationRepository.findAlreadySeatReservation(seat)
+                .ifPresent(reservation -> {
+                    throw new ReservationAlreadyExistsException("이미 예약된 좌석입니다.");
+                });
         return reservationRepository.save(Reservation.createPending(user, seat, LocalDateTime.now(clock)));
     }
 
