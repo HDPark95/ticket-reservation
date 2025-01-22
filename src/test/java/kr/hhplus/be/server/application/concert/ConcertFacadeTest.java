@@ -90,8 +90,8 @@ public class ConcertFacadeTest {
         LocalDateTime fixedNow = LocalDateTime.now(clock);
 
         em.persist(Reservation.builder()
-                .user(user)
-                .seat(schedule.getSeats().get(0))
+                .userId(user.getId())
+                .seatId(schedule.getSeats().get(0).getId())
                 .status(ReservationStatus.PENDING)
                 .expiredAt(fixedNow.plusMinutes(10)) // 만료되지 않은 예약
                 .build());
@@ -122,8 +122,8 @@ public class ConcertFacadeTest {
         LocalDateTime fixedNow = LocalDateTime.now(clock);
 
         em.persist(Reservation.builder()
-                .user(user)
-                .seat(schedule.getSeats().get(0))
+                .userId(user.getId())
+                .seatId(schedule.getSeats().get(0).getId())
                 .status(ReservationStatus.PENDING)
                 .expiredAt(fixedNow.minusMinutes(10)) // 만료된 예약
                 .build());
@@ -152,8 +152,8 @@ public class ConcertFacadeTest {
         LocalDateTime fixedNow = LocalDateTime.now(clock);
 
         em.persist(Reservation.builder()
-                .user(user)
-                .seat(schedule.getSeats().get(0))
+                .userId(user.getId())
+                .seatId(schedule.getSeats().get(0).getId())
                 .status(ReservationStatus.RESERVED)
                 .expiredAt(fixedNow.minusMinutes(10)) // RESERVED 상태의 예약
                 .build());

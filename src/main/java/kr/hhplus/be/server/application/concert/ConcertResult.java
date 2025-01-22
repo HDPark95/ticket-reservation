@@ -34,8 +34,8 @@ public record ConcertResult() {
             ReservationStatus status,
             BigDecimal price
     ){
-        public static ReservationResult from(Reservation reservation){
-            return new ReservationResult(reservation.getId(), reservation.getStatus(), reservation.getSeat().getPrice());
+        public static ReservationResult from(Reservation reservation, BigDecimal price){
+            return new ReservationResult(reservation.getId(), reservation.getStatus(), price);
         }
     }
 }

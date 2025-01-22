@@ -36,7 +36,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void usePoint(User user, BigDecimal price) {
+    public User usePoint(Long userId, BigDecimal price) {
+        User user = userRepository.findByIdForUpdate(userId)
+                .orElseThrow(() -> new UserNotFoundException("해당하는 사용자가 없습니다."));
         user.usePoint(price);
+        return user;
+    }
+
+    @Override
+    public User addPoint(Long userId, BigDecimal amount) {
+        User user = userRepository.findByIdForUpdate(userId)
+                .orElseThrow(() -> new UserNotFoundException("해당하는 사용자가 없습니다."));
+        user.addPoint(amount);
+        return user;
     }
 }

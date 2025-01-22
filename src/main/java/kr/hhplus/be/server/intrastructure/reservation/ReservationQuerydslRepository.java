@@ -26,7 +26,8 @@ public class ReservationQuerydslRepository {
 
     public List<Reservation> getValidReservationsByScheduleId(Long scheduleId, LocalDateTime now) {
         return jpaQueryFactory.selectFrom(reservation)
-                .innerJoin(reservation.seat, seat)
+                .innerJoin(seat)
+                .on(reservation.seatId.eq(seat.id))
                 .innerJoin(seat.concertSchedule, concertSchedule)
                 .where(
                         concertSchedule.id.eq(scheduleId),
@@ -39,20 +40,22 @@ public class ReservationQuerydslRepository {
     public Optional<Reservation> findByIdForUpdate(Long reservationId) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(reservation)
-                        .innerJoin(reservation.seat, seat).fetchJoin()
-                        .innerJoin(seat.concertSchedule, concertSchedule).fetchJoin()
-                        .innerJoin(concertSchedule.concert).fetchJoin()
+                        .innerJoin(seat)
+                        .on(reservation.seatId.eq(seat.id))
+                        .innerJoin(seat.concertSchedule, concertSchedule)
+                        .innerJoin(concertSchedule.concert)
                         .where(reservation.id.eq(reservationId))
                         .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                         .fetchOne()
         );
     }
 
-    public Optional<Reservation> findAlreadySeatReservation(Seat seat) {
+    public Optional<Reservation> findAlreadySeatReservation(Long seatId) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(reservation)
-                        .innerJoin(reservation.seat, QSeat.seat).fetchJoin()
-                        .where(reservation.seat.eq(seat),
+                        .innerJoin(seat)
+                        .on(reservation.seatId.eq(seat.id))
+                        .where(reservation.seatId.eq(seatId),
                                 reservation.status.eq(ReservationStatus.PENDING).and(reservation.expiredAt.gt(LocalDateTime.now())).or(reservation.status.eq(ReservationStatus.RESERVED)))
                         .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                         .fetchOne()

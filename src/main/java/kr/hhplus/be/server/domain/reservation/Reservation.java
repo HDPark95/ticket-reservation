@@ -21,13 +21,11 @@ public class Reservation extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), nullable = false)
-    private User user;
+    private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), nullable = false)
-    private Seat seat;
+    private Long seatId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "varchar(255)", nullable = false)
@@ -36,10 +34,10 @@ public class Reservation extends BaseEntity {
     @Column(name = "expired_at", columnDefinition = "datetime", nullable = false)
     private LocalDateTime expiredAt;
 
-    public static Reservation createPending(User user, Seat seat, LocalDateTime now){
+    public static Reservation createPending(Long userId, Long seatId, LocalDateTime now){
         return Reservation.builder()
-                .user(user)
-                .seat(seat)
+                .userId(userId)
+                .seatId(seatId)
                 .status(ReservationStatus.PENDING)
                 .expiredAt(now.plusMinutes(30))
                 .build();

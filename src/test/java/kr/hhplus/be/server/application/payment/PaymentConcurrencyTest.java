@@ -57,8 +57,8 @@ public class PaymentConcurrencyTest {
         Seat seat = concertRepository.saveSeat(Seat.builder().concertSchedule(schedule).seatNumber(1).price(BigDecimal.valueOf(10000L)).build());
         Reservation reservation = reservationRepository.save(
                 Reservation.builder()
-                        .user(user)
-                        .seat(seat)
+                        .userId(user.getId())
+                        .seatId(seat.getId())
                         .status(ReservationStatus.PENDING)
                         .expiredAt(LocalDateTime.now().plusMinutes(30))
                         .build()

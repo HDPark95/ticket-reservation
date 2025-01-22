@@ -24,19 +24,13 @@ public class UserPointFacade {
 
     @Transactional
     public UserPointResult addPoint(Long userId, BigDecimal amount) {
-        User user = userService.findByIdForUpdate(userId)
-                .orElseThrow(() -> new UserNotFoundException("해당하는 사용자가 없습니다."));
-
-        user.addPoint(amount);
+        User user = userService.addPoint(userId, amount);
         return UserPointResult.fromUser(user);
     }
 
     @Transactional
     public UserPointResult usePoint(Long userId, BigDecimal amount) {
-        User user = userService.findByIdForUpdate(userId)
-                .orElseThrow(() -> new UserNotFoundException("해당하는 사용자가 없습니다."));
-
-        user.usePoint(amount);
+        User user = userService.usePoint(userId, amount);
         return UserPointResult.fromUser(user);
     }
 }

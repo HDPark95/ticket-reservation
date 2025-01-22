@@ -96,8 +96,8 @@ public class PaymentFacadeTest {
 
         Reservation reservation = reservationRepository.save(
                 Reservation.builder()
-                        .user(user)
-                        .seat(schedule.getSeats().get(0))
+                        .userId(user.getId())
+                        .seatId(schedule.getSeats().get(0).getId())
                         .status(ReservationStatus.PENDING) // 예약 상태 PENDING
                         .expiredAt(LocalDateTime.now(clock).plusMinutes(30)) // 30분 후 만료
                         .build()
@@ -134,8 +134,8 @@ public class PaymentFacadeTest {
 
         Reservation reservation = reservationRepository.save(
                 Reservation.builder()
-                        .user(user)
-                        .seat(schedule.getSeats().get(0))
+                        .userId(user.getId())
+                        .seatId(schedule.getSeats().get(0).getId())
                         .status(ReservationStatus.RESERVED) //이미 결제된 상태
                         .expiredAt(LocalDateTime.now(clock).plusMinutes(30)) // 30분 후 만료
                         .build()
@@ -160,8 +160,8 @@ public class PaymentFacadeTest {
 
         Reservation reservation = reservationRepository.save(
                 Reservation.builder()
-                        .user(user)
-                        .seat(schedule.getSeats().get(0))
+                        .userId(user.getId())
+                        .seatId(schedule.getSeats().get(0).getId())
                         .status(ReservationStatus.PENDING) // 결제 대기 상태
                         .expiredAt(LocalDateTime.now(clock).minusMinutes(30)) // 30분 전 만료
                         .build()
@@ -184,8 +184,8 @@ public class PaymentFacadeTest {
 
         Reservation reservation = reservationRepository.save(
                 Reservation.builder()
-                        .user(user)
-                        .seat(schedule.getSeats().get(0))
+                        .userId(user.getId())
+                        .seatId(schedule.getSeats().get(0).getId())
                         .status(ReservationStatus.PENDING) //이미 결제된 상태
                         .expiredAt(LocalDateTime.now(clock).plusMinutes(30)) // 30분 후 만료
                         .build()

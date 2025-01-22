@@ -19,7 +19,7 @@ public class ReservationTest {
         LocalDateTime fixedNow = LocalDateTime.of(2025, 1, 1, 12, 0, 0);
 
         // when
-        Reservation reservation = Reservation.createPending(user, seat, fixedNow);
+        Reservation reservation = Reservation.createPending(user.getId(), seat.getId(), fixedNow);
 
         // then
         // 예약 대기 상태인가?
@@ -36,7 +36,7 @@ public class ReservationTest {
         Seat seat = Seat.builder().build();
 
         LocalDateTime createdTime = LocalDateTime.of(2025, 1, 1, 12, 0, 0);
-        Reservation reservation = Reservation.createPending(user, seat, createdTime);
+        Reservation reservation = Reservation.createPending(user.getId(), seat.getId(), createdTime);
         //만료 시간 - 20분 이후
         LocalDateTime reserveTime = LocalDateTime.of(2025, 1, 1, 12, 20, 0);
         // when
@@ -55,7 +55,7 @@ public class ReservationTest {
         Seat seat = Seat.builder().build();
 
         LocalDateTime createdTime = LocalDateTime.of(2025, 1, 1, 12, 0, 0);
-        Reservation reservation = Reservation.createPending(user, seat, createdTime);
+        Reservation reservation = Reservation.createPending(user.getId(), seat.getId(), createdTime);
         //만료 시간 - 20분 이후
         LocalDateTime reserveTime = LocalDateTime.of(2025, 1, 1, 12, 20, 0);
         reservation.reserved(reserveTime);
@@ -73,7 +73,7 @@ public class ReservationTest {
         Seat seat = Seat.builder().build();
 
         LocalDateTime createdTime = LocalDateTime.of(2025, 1, 1, 12, 0, 0);
-        Reservation reservation = Reservation.createPending(user, seat, createdTime);
+        Reservation reservation = Reservation.createPending(user.getId(), seat.getId(), createdTime);
         //만료 시간 - 40분 이후
         LocalDateTime reserveTime = LocalDateTime.of(2025, 1, 1, 12, 40, 0);
 

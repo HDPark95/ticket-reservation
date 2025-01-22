@@ -31,14 +31,14 @@ public class ConcertFacade {
     public ConcertResult.ReservationResult reserve(ConcertCriteria.ReserveSeat command){
         User user = userService.getUser(command.userId());
         Seat seat = concertService.getSeat(command.seatId());
-        Reservation reservation = reservationService.reserve(user, seat);
-        return ConcertResult.ReservationResult.from(reservation);
+        Reservation reservation = reservationService.reserve(user.getId(), seat.getId());
+        return ConcertResult.ReservationResult.from(reservation, seat.getPrice());
     }
 
     @Transactional
     public List<ConcertResult.SeatInfo> getAvailableSeats(Long scheduleId){
         List<Reservation> reservations = reservationService.getValidReservationsByScheduleId(scheduleId);
-        List<Long> reservedSeatIds = reservations.stream().map(reservation -> reservation.getSeat().getId()).toList();
+        List<Long> reservedSeatIds = reservations.stream().map(reservation -> reservation.getSeatId()).toList();
         List<Seat> seats = concertService.getAvailableSeats(scheduleId, reservedSeatIds);
         return seats.stream().map(ConcertResult.SeatInfo::from).toList();
     }

@@ -45,8 +45,8 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public Optional<Reservation> findAlreadySeatReservation(Seat seat) {
-        return reservationQuerydslRepository.findAlreadySeatReservation(seat);
+    public Optional<Reservation> findAlreadySeatReservation(Long seatId) {
+        return reservationQuerydslRepository.findAlreadySeatReservation(seatId);
     }
 
 }
