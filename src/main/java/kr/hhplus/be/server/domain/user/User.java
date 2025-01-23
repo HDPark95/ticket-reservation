@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.user;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.core.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 
@@ -27,6 +28,10 @@ public class User extends BaseEntity {
     @Column(name = "point")
     private BigDecimal point;
 
+    @ColumnDefault("0")
+    @Version
+    private long version;
+
     public void usePoint(BigDecimal amount) {
         if (this.point.compareTo(amount) < 0) {
             throw new InsufficientPointsException("포인트가 부족합니다.");
@@ -44,4 +49,5 @@ public class User extends BaseEntity {
         }
         this.point = this.point.add(point);
     }
+
 }

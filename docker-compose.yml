@@ -11,7 +11,10 @@ services:
       - MYSQL_DATABASE=hhplus
     volumes:
       - mysql_data:/var/lib/mysql
-
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
 volumes:
   mysql_data:
 

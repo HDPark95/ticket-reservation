@@ -21,7 +21,6 @@ public class UserQuerydslRepository {
                 jpaQueryFactory
                         .selectFrom(user)
                         .where(user.id.eq(id))
-                        .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                         .fetchOne()
         );
     }
