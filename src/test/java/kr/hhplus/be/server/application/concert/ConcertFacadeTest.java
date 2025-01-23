@@ -52,7 +52,6 @@ public class ConcertFacadeTest {
 
     @Test
     @DisplayName("콘서트 예약 성공 - 결제 대기 ")
-    @Transactional
     void reserve() {
         // given
         setMockClock();
@@ -69,6 +68,8 @@ public class ConcertFacadeTest {
         // then
         Assertions.assertEquals(ReservationStatus.PENDING, reserve.status());
         Assertions.assertEquals(0, seat.getPrice().compareTo(reserve.price()));
+        //분산락의 경우 새로운 트랜잭션으로 동작하므로 종료시 제거
+        userRepository.deleteAll();
     }
 
     @Test

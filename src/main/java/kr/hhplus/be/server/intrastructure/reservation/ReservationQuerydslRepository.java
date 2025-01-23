@@ -57,7 +57,6 @@ public class ReservationQuerydslRepository {
                         .on(reservation.seatId.eq(seat.id))
                         .where(reservation.seatId.eq(seatId),
                                 reservation.status.eq(ReservationStatus.PENDING).and(reservation.expiredAt.gt(LocalDateTime.now())).or(reservation.status.eq(ReservationStatus.RESERVED)))
-                        .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                         .fetchOne()
         );
     }

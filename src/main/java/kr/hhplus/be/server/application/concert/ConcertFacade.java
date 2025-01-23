@@ -8,6 +8,7 @@ import kr.hhplus.be.server.domain.reservation.Reservation;
 import kr.hhplus.be.server.domain.reservation.ReservationService;
 import kr.hhplus.be.server.domain.user.User;
 import kr.hhplus.be.server.domain.user.UserService;
+import kr.hhplus.be.server.intrastructure.redis.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class ConcertFacade {
         return schedules.stream().map(ConcertResult.ScheduleInfo::from).toList();
     }
 
+    @DistributedLock(key="'concert:' + #command.seatId")
     @Transactional
     public ConcertResult.ReservationResult reserve(ConcertCriteria.ReserveSeat command){
         User user = userService.getUser(command.userId());
