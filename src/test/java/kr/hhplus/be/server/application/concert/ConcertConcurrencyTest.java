@@ -47,6 +47,7 @@ public class ConcertConcurrencyTest {
     @Autowired
     private ConcertRepository concertRepository;
 
+
     @Test
     @DisplayName("동시에 하나의 좌석에 여러 사용자가 예약 대기를 시도할때, 하나의 사용자만 성공해야 한다.")
     void reserveConcertSeat() throws InterruptedException {

@@ -28,7 +28,6 @@ public class ConcertFacade {
         return schedules.stream().map(ConcertResult.ScheduleInfo::from).toList();
     }
 
-    @DistributedLock(key="'concert:' + #command.seatId")
     @Transactional
     public ConcertResult.ReservationResult reserve(ConcertCriteria.ReserveSeat command){
         User user = userService.getUser(command.userId());
