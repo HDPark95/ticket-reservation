@@ -12,7 +12,7 @@ public class UserTest {
     @DisplayName("사용자 포인트 충전이 정상적으로 충전된다.")
     public void chargePoint() {
         // given
-        User user = new User(1L, "test", "01012341234", BigDecimal.ZERO);
+        User user = new User(1L, "test", "01012341234", BigDecimal.ZERO, 1L);
 
         // when
         user.addPoint(BigDecimal.valueOf(1000));
@@ -25,7 +25,7 @@ public class UserTest {
     @DisplayName("사용자 포인트 사용이 정상적으로 차감된다.")
     public void usePoint() {
         // given
-        User user = new User(1L, "test", "01012341234", BigDecimal.valueOf(1000));
+        User user = new User(1L, "test", "01012341234", BigDecimal.valueOf(1000), 1L);
 
         // when
         user.usePoint(BigDecimal.valueOf(500));
@@ -38,7 +38,7 @@ public class UserTest {
     @DisplayName("사용자 포인트가 부족할 경우 InsufficientPointsException 예외가 발생한다.")
     public void usePointWithInsufficientPoint() {
         // given
-        User user = new User(1L, "test", "01012341234", BigDecimal.valueOf(1000));
+        User user = new User(1L, "test", "01012341234", BigDecimal.valueOf(1000), 1L);
 
         // when & then
         assertThrows(InsufficientPointsException.class, () -> user.usePoint(BigDecimal.valueOf(2000)));
@@ -48,7 +48,7 @@ public class UserTest {
     @DisplayName("사용자가 음수의 포인트를 충전하려고 할 경우 NegativePointException 예외가 발생한다.")
     public void chargeNegativePoint() {
         // given
-        User user = new User(1L, "test", "01012341234", BigDecimal.ZERO);
+        User user = new User(1L, "test", "01012341234", BigDecimal.ZERO, 1L);
 
         // when & then
         assertThrows(NegativePointException.class, () -> user.addPoint(BigDecimal.valueOf(-1000)));
@@ -58,7 +58,7 @@ public class UserTest {
     @DisplayName("사용자가 음수의 포인트를 사용하려고 할 경우 NegativePointException 예외가 발생한다.")
     public void useNegativePoint() {
         // given
-        User user = new User(1L, "test", "01012341234", BigDecimal.valueOf(1000));
+        User user = new User(1L, "test", "01012341234", BigDecimal.valueOf(1000), 1L);
 
         // when & then
         assertThrows(NegativePointException.class, () -> user.usePoint(BigDecimal.valueOf(-500)));

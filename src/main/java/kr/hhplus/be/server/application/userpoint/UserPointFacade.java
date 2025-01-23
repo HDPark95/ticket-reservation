@@ -23,14 +23,12 @@ public class UserPointFacade {
         return UserPointResult.fromUser(user);
     }
 
-    @DistributedLock(key="'point:' + #userId")
     @Transactional
     public UserPointResult addPoint(Long userId, BigDecimal amount) {
         User user = userService.addPoint(userId, amount);
         return UserPointResult.fromUser(user);
     }
 
-    @DistributedLock(key="'point:' + #userId")
     @Transactional
     public UserPointResult usePoint(Long userId, BigDecimal amount) {
         User user = userService.usePoint(userId, amount);

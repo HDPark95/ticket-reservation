@@ -69,7 +69,7 @@ public class UserPointConcurrencyTest {
     }
 
     @Test
-    @DisplayName("같은 회원이 동시에 1000원씩 10번 포인트를 적립하면 10000원이 적립되어야 한다.")
+    @DisplayName("같은 회원이 동시에 1000원씩 2번 포인트를 적립하면 한번만 성공하여 1000원이 적립되어야 한다.")
     public void addPointConcurrent() throws InterruptedException {
         // given
         Long userId = user.getId();
@@ -77,7 +77,7 @@ public class UserPointConcurrencyTest {
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         List<ChargeJob> chargeJobs = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             chargeJobs.add(new ChargeJob(userId, amount));
         }
         // when
@@ -85,11 +85,11 @@ public class UserPointConcurrencyTest {
 
         // then
         UserPointResult pointInfo = userPointFacade.getPointInfo(userId);
-        Assertions.assertTrue(pointInfo.point().compareTo(new BigDecimal(10000)) == 0);
+        Assertions.assertTrue(pointInfo.point().compareTo(new BigDecimal(1000)) == 0);
     }
 
     @Test
-    @DisplayName("같은 회원이 동시에 1000원씩 10번 포인트를 사용하면 10000원이 차감되어야 한다.")
+    @DisplayName("같은 회원이 동시에 1000원씩 2번 포인트를 사용하면 한번만 성공하여 1000원이 차감되어야 한다.")
     public void usePointConcurrent() throws InterruptedException {
         // given
         Long userId = user.getId();
@@ -98,7 +98,7 @@ public class UserPointConcurrencyTest {
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         List<UseJob> useJobs = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             useJobs.add(new UseJob(userId, amount));
         }
         // when
@@ -106,6 +106,6 @@ public class UserPointConcurrencyTest {
 
         // then
         UserPointResult pointInfo = userPointFacade.getPointInfo(userId);
-        Assertions.assertTrue(pointInfo.point().compareTo(BigDecimal.ZERO) == 0);
+        Assertions.assertTrue(pointInfo.point().compareTo(BigDecimal.valueOf(9000)) == 0);
     }
 }
