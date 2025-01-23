@@ -62,7 +62,7 @@ public class ConcertFacadeTest {
         ConcertSchedule schedule = concertRepository.saveSchdule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
         Seat seat = concertRepository.saveSeat(Seat.builder().concertSchedule(schedule).seatNumber(1).price(BigDecimal.valueOf(10000L)).build());
 
-        ConcertCriteria.ReserveSeat command = new ConcertCriteria.ReserveSeat(schedule.getId(), seat.getId(), user.getId());
+        ConcertCriteria.ReserveSeat command = new ConcertCriteria.ReserveSeat(seat.getId(), user.getId());
         // when
         ConcertResult.ReservationResult reserve = concertFacade.reserve(command);
 

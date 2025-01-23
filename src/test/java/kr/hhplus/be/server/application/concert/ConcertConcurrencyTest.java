@@ -62,7 +62,7 @@ public class ConcertConcurrencyTest {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         List<Callable<ConcertResult.ReservationResult>> tasks = new ArrayList<>();
         users.forEach(user -> {
-            ConcertCriteria.ReserveSeat command = new ConcertCriteria.ReserveSeat(schedule.getId(), seat.getId(), user.getId());
+            ConcertCriteria.ReserveSeat command = new ConcertCriteria.ReserveSeat(seat.getId(), user.getId());
             tasks.add(() -> concertFacade.reserve(command));
         });
 

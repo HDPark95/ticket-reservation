@@ -7,9 +7,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import kr.hhplus.be.server.application.concert.ConcertCriteria;
 import kr.hhplus.be.server.application.concert.ConcertFacade;
 import kr.hhplus.be.server.application.concert.ConcertResult;
 import kr.hhplus.be.server.interfaces.api.user.UserResponse;
+import kr.hhplus.be.server.interfaces.handler.TokenUserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -42,4 +44,12 @@ public class ConcertController {
         List<ConcertResponse.AvailableSeat> availableSeatStream = availableSeats.stream().map(seat -> new ConcertResponse.AvailableSeat(seat.seatId(), seat.seatNumber(), seat.price())).toList();
         return ResponseEntity.ok(availableSeatStream);
     }
+
+    @PostMapping(path = "/reserve", produces = { "application/json" }, consumes = { "application/json" })
+    @Operation(summary = "공연 좌석 예약", description = "공연을 좌석을 예약합니다.", tags={ "concerts" })
+    public ResponseEntity<Void> reserve(@RequestBody @Valid ConcertRequest.Reserve request, @TokenUserId Long userId) {
+        ConcertResult.ReservationResult reservationResult = concertFacade.reserve(new ConcertCriteria.ReserveSeat(request.seatId(), userId));
+        return ResponseEntity.status(201).build();
+    }
+
 }
