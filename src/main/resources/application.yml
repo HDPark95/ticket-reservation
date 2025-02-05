@@ -33,6 +33,11 @@ logging:
   log-file-name: concert-console-logs
   level:
     root: info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 ---
 spring.config.activate.on-profile: local, test
 
