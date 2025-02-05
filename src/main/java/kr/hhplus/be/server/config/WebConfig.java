@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.intrastructure.config;
+package kr.hhplus.be.server.config;
 
 import kr.hhplus.be.server.interfaces.handler.TokenUserArgumentResolver;
 import kr.hhplus.be.server.interfaces.interceptor.WaitingTokenInterceptor;

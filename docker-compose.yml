@@ -1,5 +1,21 @@
 version: '3'
 services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
   mysql:
     image: mysql:8.0
     ports:
@@ -17,6 +33,7 @@ services:
       - "6379:6379"
 volumes:
   mysql_data:
+  grafana_data:
 
 networks:
   default:
