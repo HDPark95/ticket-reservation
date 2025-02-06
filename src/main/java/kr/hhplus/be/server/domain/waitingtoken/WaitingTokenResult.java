@@ -1,12 +1,9 @@
 package kr.hhplus.be.server.domain.waitingtoken;
 
-public record WaitingTokenResult(String token,
-                                 TokenStatus status,
-                                 Long position) {
-    public static WaitingTokenResult from(WaitingToken waitingToken, Long position) {
+public record WaitingTokenResult(String token, Long position) {
+    public static WaitingTokenResult from(String token, Long position) {
         return new WaitingTokenResult(
-                waitingToken.getToken(),
-                waitingToken.getStatus(),
+                token,
                 position
         );
     }

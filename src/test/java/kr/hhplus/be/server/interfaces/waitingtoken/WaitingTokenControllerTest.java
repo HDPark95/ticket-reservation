@@ -35,9 +35,9 @@ public class WaitingTokenControllerTest {
         String phoneNumber = "01012345678";
         String token = "sample-token";
         TokenStatus status = TokenStatus.ACTIVATE;
-        Long position = 1L;
+        Long position = 0L;
 
-        WaitingTokenResult result = new WaitingTokenResult(token, status, position);
+        WaitingTokenResult result = new WaitingTokenResult(token, position);
 
         when(waitingTokenFacade.issue(any(String.class))).thenReturn(result);
 

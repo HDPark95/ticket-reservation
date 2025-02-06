@@ -1,76 +1,60 @@
 package kr.hhplus.be.server.intrastructure.waitingtoken;
 
-import com.querydsl.core.QueryFactory;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.LockModeType;
-import kr.hhplus.be.server.domain.user.QUser;
-import kr.hhplus.be.server.domain.waitingtoken.TokenStatus;
-import kr.hhplus.be.server.domain.waitingtoken.WaitingToken;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-
-import static kr.hhplus.be.server.domain.user.QUser.user;
-import static kr.hhplus.be.server.domain.waitingtoken.QWaitingToken.waitingToken;
+import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
 public class WaitingTokenRepositoryImpl implements WaitingTokenRepository {
 
-    private final WaitingTokenJPARepository waitingTokenJPARepository;
-    private final WaitingTokenQuerydslRepository waitingTokenQuerydslRepository;
+    private final WaitingTokenRedisRepository redisRepository;
 
     @Override
-    public WaitingToken save(WaitingToken waitingToken) {
-        return waitingTokenJPARepository.save(waitingToken);
+    public void addToWaitingQueue(String token, long timestamp) {
+        redisRepository.addToWaitingQueue(token, timestamp);
     }
 
     @Override
-    public List<WaitingToken> saveAll(List<WaitingToken> tokens){
-        return waitingTokenJPARepository.saveAll(tokens);
+    public Long getPosition(String token) {
+        return redisRepository.getQueuePosition(token);
     }
 
     @Override
-    public Optional<WaitingToken> findByUserIdForUpdate(Long userId) {
-        return waitingTokenQuerydslRepository.findByUserIdForUpdate(userId);
+    public Long getActiveTokenCount() {
+        return redisRepository.getActiveUserCount();
     }
 
     @Override
-    public Long getPosition(Long userId) {
-        return waitingTokenQuerydslRepository.getPosition(userId);
+    public int deleteExpiredTokens(long currentTimestamp) {
+        return redisRepository.deleteExpiredTokens(currentTimestamp);
     }
 
     @Override
-    public Optional<WaitingToken> findByUserId(Long userId) {
-        return waitingTokenQuerydslRepository.findByUserId(userId);
+    public Set<String> getTokensFromQueueForActive(Long availableSlots) {
+        return redisRepository.getUsersFromQueue(availableSlots);
     }
 
     @Override
-    public void deleteExpiredTokens(LocalDateTime now) {
-        waitingTokenQuerydslRepository.deleteExpiredTokens(now);
+    public void activateTokens(Set<String> usersToActivate, long expiryTimestamp) {
+        redisRepository.addActivateQueue(usersToActivate, expiryTimestamp);
     }
 
     @Override
-    public void activateTop100Tokens() {
-        waitingTokenJPARepository.activateTop100Tokens();
+    public String addToken(Long id, String token) {
+        return redisRepository.addToken(id, token);
     }
 
     @Override
-    public Optional<WaitingToken> findByToken(String token) {
-        return waitingTokenQuerydslRepository.findByToken(token);
+    public Boolean isActiveToken(String token) {
+        return redisRepository.isActiveToken(token);
     }
 
     @Override
-    public void deleteAll() {
-        waitingTokenJPARepository.deleteAll();
-    }
-
-    @Override
-    public List<WaitingToken> findAll() {
-        return waitingTokenJPARepository.findAll();
+    public Optional<Object> findUserIdByToken(String token) {
+        return redisRepository.findUserIdByToken(token);
     }
 }

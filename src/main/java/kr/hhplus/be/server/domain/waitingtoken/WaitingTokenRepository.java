@@ -1,28 +1,25 @@
 package kr.hhplus.be.server.domain.waitingtoken;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface WaitingTokenRepository {
 
-    WaitingToken save(WaitingToken waitingToken);
+    void addToWaitingQueue(String token, long timestamp);
 
-    List<WaitingToken> saveAll(List<WaitingToken> tokens);
+    Long getPosition(String token);
 
-    Optional<WaitingToken> findByUserIdForUpdate(Long userId);
+    int deleteExpiredTokens(long currentTimestamp);
 
-    Long getPosition(Long userId);
+    Long getActiveTokenCount();
 
-    Optional<WaitingToken> findByUserId(Long userId);
+    Set<String> getTokensFromQueueForActive(Long availableSlots);
 
-    void deleteExpiredTokens(LocalDateTime now);
+    void activateTokens(Set<String> usersToActivate, long expiryTimestamp);
 
-    void activateTop100Tokens();
+    Boolean isActiveToken(String token);
 
-    Optional<WaitingToken> findByToken(String waitingToken);
+    Optional<Object> findUserIdByToken(String token);
 
-    void deleteAll();
-
-    List<WaitingToken> findAll();
+    String addToken(Long id, String token);
 }

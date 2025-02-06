@@ -39,7 +39,6 @@ public class WaitingTokenFacadeTest {
 
     @AfterEach
     void tearDown() {
-        waitingTokenRepository.deleteAll();
         userRepository.deleteAll();
     }
 

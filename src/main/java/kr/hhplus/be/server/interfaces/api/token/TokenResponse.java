@@ -10,6 +10,10 @@ public record TokenResponse(
 ) {
 
     public static TokenResponse from(WaitingTokenResult issue) {
-        return new TokenResponse(issue.token(), issue.status(), issue.position());
+        TokenStatus status = TokenStatus.WAITING;
+        if (issue.position() == 0){
+            status = TokenStatus.ACTIVATE;
+        }
+        return new TokenResponse(issue.token(), status, issue.position());
     }
 }
