@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
@@ -94,6 +93,6 @@ public class WaitingTokenRedisRepository {
     }
 
     public Optional<Object> findUserIdByToken(String token) {
-        return Optional.ofNullable(redisTemplate.opsForHash().get(USER_TOKEN_MAPPING, token));
+        return Optional.ofNullable(redisTemplate.opsForHash().get(TOKEN_USER_MAPPING, token));
     }
 }
