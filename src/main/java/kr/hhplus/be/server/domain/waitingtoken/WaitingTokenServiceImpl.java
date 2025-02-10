@@ -1,12 +1,13 @@
 package kr.hhplus.be.server.domain.waitingtoken;
 
-import jakarta.transaction.Transactional;
+import kr.hhplus.be.server.domain.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.Instant;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -14,44 +15,51 @@ public class WaitingTokenServiceImpl implements WaitingTokenService {
 
     private final WaitingTokenRepository waitingTokenRepository;
     private final Clock clock;
+    private final int MAX_ACTIVE_TOKENS = 100;
 
     @Override
-    @Transactional
-    public WaitingTokenResult issue(Long userId) {
-        Optional<WaitingToken> optionalWaitingToken = waitingTokenRepository.findByUserIdForUpdate(userId);
+    public WaitingTokenResult issue(Long id) {
+        String token = UUID.randomUUID().toString();
+        token =  waitingTokenRepository.addToken(id, token);
 
-        WaitingToken waitingToken;
-        if (optionalWaitingToken.isEmpty()) {
-            waitingToken = WaitingToken.issue(userId, clock);
-            waitingTokenRepository.save(waitingToken);
-        }else{
-            waitingToken = optionalWaitingToken.get();
+        waitingTokenRepository.addToWaitingQueue(token, Instant.now(clock).toEpochMilli());
+        Long position = waitingTokenRepository.getPosition(token);
+        return WaitingTokenResult.from(token, position);
+    }
+
+    @Override
+    public WaitingTokenResult getWaitingTokenInfo(String token) {
+        Boolean isActiveToken = waitingTokenRepository.isActiveToken(token);
+        if (isActiveToken) {
+            return WaitingTokenResult.from(token, 0L);
         }
-        /* 현재 대기열 순위 : 내 앞에 있는 WAITING 사람 수 */
-        Long position = waitingTokenRepository.getPosition(userId);
-        return WaitingTokenResult.from(waitingToken, position);
+        Long position = waitingTokenRepository.getPosition(token);
+        return WaitingTokenResult.from(token, position);
     }
 
     @Override
-    @Transactional
     public void refreshWaitingTokens() {
-        LocalDateTime now = LocalDateTime.now(clock);
-        waitingTokenRepository.deleteExpiredTokens(now);
-        waitingTokenRepository.activateTop100Tokens();
+        long currentTimestamp = Instant.now(clock).toEpochMilli();
+        waitingTokenRepository.deleteExpiredTokens(currentTimestamp);
+        Long activeTokenCount = waitingTokenRepository.getActiveTokenCount();
+        long availableSlots = MAX_ACTIVE_TOKENS - (activeTokenCount != null ? activeTokenCount : 0);
+        if (availableSlots > 0) {
+            Set<String> tokensToActivate = waitingTokenRepository.getTokensFromQueueForActive(availableSlots);
+            long expiryTimestamp = currentTimestamp + 1000 * 60 * 30; // 30분
+            waitingTokenRepository.activateTokens(tokensToActivate, expiryTimestamp);
+        }
     }
 
     @Override
-    @Transactional
-    public boolean isValid(String waitingToken) {
-        WaitingToken token = waitingTokenRepository.findByToken(waitingToken)
-                .orElseThrow(() -> new WaitingTokenNotFoundException("유효하지 않은 토큰입니다."));
-        return token.validate(clock);
+    public boolean isValid(String token) {
+        return waitingTokenRepository.isActiveToken(token);
     }
 
     @Override
-    public Long getUserId(String waitingToken) {
-        return waitingTokenRepository.findByToken(waitingToken)
-                .orElseThrow(() -> new WaitingTokenNotFoundException("유효하지 않은 토큰입니다."))
-                .getUser().getId();
+    public Long getUserId(String token) {
+        Object userId = waitingTokenRepository.findUserIdByToken(token)
+                .orElseThrow(() -> new UserNotFoundException("Invalid token"));
+        return Long.parseLong(userId.toString());
     }
+
 }

@@ -1,7 +1,9 @@
 package kr.hhplus.be.server.domain.waitingtoken;
 
 public interface WaitingTokenService {
-    WaitingTokenResult issue(Long userId);
+    WaitingTokenResult issue(Long id);
+
+    WaitingTokenResult getWaitingTokenInfo(String token);
 
     void refreshWaitingTokens();
 
