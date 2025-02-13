@@ -17,4 +17,6 @@ public interface ReservationRepository {
     void deleteAll();
 
     Optional<Reservation> findAlreadySeatReservation(Long seatId);
+
+    Optional<Reservation> findById(Long id);
 }

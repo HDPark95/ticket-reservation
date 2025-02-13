@@ -46,4 +46,8 @@ public class ReservationRepositoryImpl implements ReservationRepository {
         return reservationQuerydslRepository.findAlreadySeatReservation(seatId);
     }
 
+    @Override
+    public Optional<Reservation> findById(Long id) {
+        return reservationQuerydslRepository.findById(id);
+    }
 }
