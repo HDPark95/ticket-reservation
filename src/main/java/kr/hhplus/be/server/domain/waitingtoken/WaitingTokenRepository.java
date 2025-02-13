@@ -22,4 +22,6 @@ public interface WaitingTokenRepository {
     Optional<Object> findUserIdByToken(String token);
 
     String addToken(Long id, String token);
+
+    void expireToken(Long userId);
 }

@@ -95,4 +95,13 @@ public class WaitingTokenRedisRepository {
     public Optional<Object> findUserIdByToken(String token) {
         return Optional.ofNullable(redisTemplate.opsForHash().get(TOKEN_USER_MAPPING, token));
     }
+
+    public void expireToken(Long userId) {
+        Object token = redisTemplate.opsForHash().get(USER_TOKEN_MAPPING, userId.toString());
+        if (token != null) {
+            redisTemplate.opsForHash().delete(USER_TOKEN_MAPPING, userId.toString());
+            redisTemplate.opsForHash().delete(TOKEN_USER_MAPPING, token.toString());
+            redisTemplate.opsForHash().delete(ACTIVE_QUEUE, token.toString());
+        }
+    }
 }

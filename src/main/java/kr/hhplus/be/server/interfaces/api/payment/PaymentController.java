@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import kr.hhplus.be.server.application.payment.PaymentFacade;
 import kr.hhplus.be.server.application.payment.PaymentResult;
+import kr.hhplus.be.server.interfaces.handler.TokenUserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +23,8 @@ public class PaymentController {
 
     @PostMapping
     @Operation(summary = "결제", description = "결제를 진행합니다.", tags={ "payments" })
-    public ResponseEntity<PaymentResponse> pay(@RequestBody @Valid PaymentRequest.pay request) {
-        PaymentResult pay = paymentFacade.pay(request.reservationId());
+    public ResponseEntity<PaymentResponse> pay(@RequestBody @Valid PaymentRequest.pay request, @TokenUserId Long userId) {
+        PaymentResult pay = paymentFacade.pay(request.reservationId(), userId);
         return ResponseEntity.ok(PaymentResponse.from(pay));
     }
 }

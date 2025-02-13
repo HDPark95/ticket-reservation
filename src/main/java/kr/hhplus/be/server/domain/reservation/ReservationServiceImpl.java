@@ -1,8 +1,6 @@
 package kr.hhplus.be.server.domain.reservation;
 
 import jakarta.transaction.Transactional;
-import kr.hhplus.be.server.domain.concert.Seat;
-import kr.hhplus.be.server.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +33,8 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     @Transactional
-    public Reservation getReservation(Long reservationId) {
-        return reservationRepository.findByIdForUpdate(reservationId)
+    public Reservation getReservation(Long reservationId, Long userId) {
+        return reservationRepository.findByIdAndUserIdForUpdate(reservationId, userId)
                 .orElseThrow(() -> new ReservationNotFoundException("예약 정보가 없습니다."));
     }
 

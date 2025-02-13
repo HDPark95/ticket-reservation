@@ -8,6 +8,7 @@ import kr.hhplus.be.server.domain.payment.PaymentService;
 import kr.hhplus.be.server.domain.reservation.Reservation;
 import kr.hhplus.be.server.domain.reservation.ReservationService;
 import kr.hhplus.be.server.domain.user.UserService;
+import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,24 +22,23 @@ public class PaymentFacade {
     private final PaymentService paymentService;
     private final UserService userService;
     private final ConcertService concertService;
+    private final WaitingTokenService waitingTokenService;
+
     @Transactional
-    public PaymentResult pay(Long reservationId) {
-        // 예약 정보 조회
-        Reservation reservation = reservationService.getReservation(reservationId);
-        // 좌석 정보 조회
+    public PaymentResult pay(Long reservationId, Long userId) {
+        Reservation reservation = reservationService.getReservation(reservationId, userId);
         Seat seat = concertService.getSeat(reservation.getSeatId());
-        //사용자 포인트 사용
         userService.usePoint(reservation.getUserId(), seat.getPrice());
-        // 예약 완료
         reservationService.complete(reservation);
-        //결제 내역 생성
-        return paymentService.make(new PaymentCommand(
+        PaymentResult result = paymentService.make(new PaymentCommand(
                 reservation.getUserId(),
                 reservation.getId(),
                 seat.getConcertSchedule().getDate(),
                 seat.getSeatNumber(),
                 seat.getPrice()
         ));
+        waitingTokenService.expireToken(reservation.getUserId());
+        return result;
     }
 
     @Transactional

@@ -57,4 +57,9 @@ public class WaitingTokenRepositoryImpl implements WaitingTokenRepository {
     public Optional<Object> findUserIdByToken(String token) {
         return redisRepository.findUserIdByToken(token);
     }
+
+    @Override
+    public void expireToken(Long userId) {
+        redisRepository.expireToken(userId);
+    }
 }

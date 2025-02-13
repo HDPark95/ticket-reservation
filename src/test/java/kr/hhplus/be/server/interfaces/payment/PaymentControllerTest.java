@@ -41,7 +41,7 @@ public class PaymentControllerTest {
         Long userId = 1L;
         when(waitingTokenService.isValid(anyString())).thenReturn(true);
         when(waitingTokenService.getUserId(anyString())).thenReturn(userId);
-        when(paymentFacade.pay(any())).thenReturn(
+        when(paymentFacade.pay(any(), any())).thenReturn(
                 new PaymentResult(1L, BigDecimal.valueOf(10000), LocalDate.parse("2025-01-20"), 1)
         );
         mockMvc.perform(post("/api/v1/payments")

@@ -1,8 +1,5 @@
 package kr.hhplus.be.server.domain.reservation;
 
-import kr.hhplus.be.server.domain.concert.Seat;
-import kr.hhplus.be.server.domain.user.User;
-
 import java.util.List;
 
 public interface ReservationService {
@@ -10,7 +7,7 @@ public interface ReservationService {
 
     Reservation reserve(Long userId, Long seatId) ;
 
-    Reservation getReservation(Long reservationId);
+    Reservation getReservation(Long reservationId, Long userId);
 
     void complete(Reservation reservation);
 }

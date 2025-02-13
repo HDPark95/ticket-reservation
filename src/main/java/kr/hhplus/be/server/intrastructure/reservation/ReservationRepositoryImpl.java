@@ -1,10 +1,7 @@
 package kr.hhplus.be.server.intrastructure.reservation;
 
-import kr.hhplus.be.server.domain.concert.Seat;
 import kr.hhplus.be.server.domain.reservation.Reservation;
 import kr.hhplus.be.server.domain.reservation.ReservationRepository;
-import kr.hhplus.be.server.domain.reservation.ReservationStatus;
-import kr.hhplus.be.server.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -30,8 +27,8 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public Optional<Reservation> findByIdForUpdate(Long reservationId) {
-        return reservationQuerydslRepository.findByIdForUpdate(reservationId);
+    public Optional<Reservation> findByIdAndUserIdForUpdate(Long reservationId, Long userId) {
+        return reservationQuerydslRepository.findByIdAndUserIdForUpdate(reservationId, userId);
     }
 
     @Override

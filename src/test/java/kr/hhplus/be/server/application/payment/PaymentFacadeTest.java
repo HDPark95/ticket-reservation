@@ -105,7 +105,7 @@ public class PaymentFacadeTest {
 
         // when && then
         Assertions.assertDoesNotThrow(() -> {
-            paymentFacade.pay(reservation.getId());
+            paymentFacade.pay(reservation.getId(), user.getId());
         });
     }
 
@@ -113,12 +113,13 @@ public class PaymentFacadeTest {
     @Transactional
     @DisplayName("결제 완료 처리시 존재하지 않는 예약 ID인 경우 ReservationNotFoundException 발생")
     public void completePaymentWithNonExistReservation() {
+        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "01012341234");
         // given
         Long reservationId = 999L;
 
         // when && then
         Assertions.assertThrows(ReservationNotFoundException.class, () -> {
-            paymentFacade.pay(reservationId);
+            paymentFacade.pay(reservationId, user.getId());
         });
     }
 
@@ -143,7 +144,7 @@ public class PaymentFacadeTest {
 
         // when && then
         Assertions.assertThrows(AlreadyPaidReservationException.class, () -> {
-            paymentFacade.pay(reservation.getId());
+            paymentFacade.pay(reservation.getId(), user.getId());
         });
     }
 
@@ -169,7 +170,7 @@ public class PaymentFacadeTest {
 
         // when && then
         Assertions.assertThrows(ReservationExpiredException.class, () -> {
-            paymentFacade.pay(reservation.getId());
+            paymentFacade.pay(reservation.getId(), user.getId());
         });
     }
 
@@ -193,7 +194,7 @@ public class PaymentFacadeTest {
 
         // when && then
         Assertions.assertThrows(InsufficientPointsException.class, () -> {
-            paymentFacade.pay(reservation.getId());
+            paymentFacade.pay(reservation.getId(), user.getId());
         });
     }
 }

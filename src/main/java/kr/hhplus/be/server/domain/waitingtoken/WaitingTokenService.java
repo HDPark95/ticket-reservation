@@ -10,4 +10,6 @@ public interface WaitingTokenService {
     boolean isValid(String waitingToken);
 
     Long getUserId(String waitingToken);
+
+    void expireToken(Long userId);
 }

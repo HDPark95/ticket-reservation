@@ -62,4 +62,8 @@ public class WaitingTokenServiceImpl implements WaitingTokenService {
         return Long.parseLong(userId.toString());
     }
 
+    @Override
+    public void expireToken(Long userId) {
+        waitingTokenRepository.expireToken(userId);
+    }
 }

@@ -2,8 +2,6 @@ package kr.hhplus.be.server.intrastructure.reservation;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
-import kr.hhplus.be.server.domain.concert.QSeat;
-import kr.hhplus.be.server.domain.concert.Seat;
 import kr.hhplus.be.server.domain.reservation.Reservation;
 import kr.hhplus.be.server.domain.reservation.ReservationStatus;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static kr.hhplus.be.server.domain.concert.QConcertSchedule.concertSchedule;
-import static kr.hhplus.be.server.domain.concert.QSeat.*;
 import static kr.hhplus.be.server.domain.concert.QSeat.seat;
 import static kr.hhplus.be.server.domain.reservation.QReservation.reservation;
 
@@ -37,14 +34,14 @@ public class ReservationQuerydslRepository {
                 .fetch();
     }
 
-    public Optional<Reservation> findByIdForUpdate(Long reservationId) {
+    public Optional<Reservation> findByIdAndUserIdForUpdate(Long reservationId, Long userId) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(reservation)
                         .innerJoin(seat)
                         .on(reservation.seatId.eq(seat.id))
                         .innerJoin(seat.concertSchedule, concertSchedule)
                         .innerJoin(concertSchedule.concert)
-                        .where(reservation.id.eq(reservationId))
+                        .where(reservation.id.eq(reservationId), reservation.userId.eq(userId))
                         .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                         .fetchOne()
         );

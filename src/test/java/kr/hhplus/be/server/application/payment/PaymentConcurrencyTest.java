@@ -1,12 +1,10 @@
 package kr.hhplus.be.server.application.payment;
 
 import jakarta.persistence.EntityManager;
-import kr.hhplus.be.server.application.concert.ConcertResult;
 import kr.hhplus.be.server.domain.concert.Concert;
 import kr.hhplus.be.server.domain.concert.ConcertRepository;
 import kr.hhplus.be.server.domain.concert.ConcertSchedule;
 import kr.hhplus.be.server.domain.concert.Seat;
-import kr.hhplus.be.server.domain.payment.Payment;
 import kr.hhplus.be.server.domain.payment.PaymentRepository;
 import kr.hhplus.be.server.domain.reservation.Reservation;
 import kr.hhplus.be.server.domain.reservation.ReservationRepository;
@@ -67,7 +65,7 @@ public class PaymentConcurrencyTest {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         List<Callable<PaymentResult>> tasks = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            tasks.add(() -> paymentFacade.pay(reservation.getId()));
+            tasks.add(() -> paymentFacade.pay(reservation.getId(), user.getId()));
         }
         // when
         executorService.invokeAll(tasks);
