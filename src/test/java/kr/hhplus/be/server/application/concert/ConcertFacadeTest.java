@@ -11,13 +11,11 @@ import kr.hhplus.be.server.domain.reservation.ReservationRepository;
 import kr.hhplus.be.server.domain.reservation.ReservationStatus;
 import kr.hhplus.be.server.domain.user.User;
 import kr.hhplus.be.server.domain.user.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
@@ -61,7 +59,7 @@ public class ConcertFacadeTest {
 
         User user = userRepository.save(User.builder().name("박현두").phoneNumber("010123412364").build());
         Concert concert = concertRepository.save(Concert.builder().name("아이유 콘서트").build());
-        ConcertSchedule schedule = concertRepository.saveSchdule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
+        ConcertSchedule schedule = concertRepository.saveSchedule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
         Seat seat = concertRepository.saveSeat(Seat.builder().concertSchedule(schedule).seatNumber(1).price(BigDecimal.valueOf(10000L)).build());
 
         ConcertCriteria.ReserveSeat command = new ConcertCriteria.ReserveSeat(seat.getId(), user.getId());
@@ -90,7 +88,7 @@ public class ConcertFacadeTest {
             schedule.addSeat(i, BigDecimal.valueOf(10000L));
         }
 
-        schedule = concertRepository.saveSchdule(schedule);
+        schedule = concertRepository.saveSchedule(schedule);
         LocalDateTime fixedNow = LocalDateTime.now(clock);
 
         em.persist(Reservation.builder()
@@ -122,7 +120,7 @@ public class ConcertFacadeTest {
             schedule.addSeat(i, BigDecimal.valueOf(10000L));
         }
 
-        schedule = concertRepository.saveSchdule(schedule);
+        schedule = concertRepository.saveSchedule(schedule);
         LocalDateTime fixedNow = LocalDateTime.now(clock);
 
         em.persist(Reservation.builder()
@@ -152,7 +150,7 @@ public class ConcertFacadeTest {
         for (int i = 0; i <50L; i++) {
             schedule.addSeat(i, BigDecimal.valueOf(10000L));
         }
-        schedule = concertRepository.saveSchdule(schedule);
+        schedule = concertRepository.saveSchedule(schedule);
         LocalDateTime fixedNow = LocalDateTime.now(clock);
 
         em.persist(Reservation.builder()

@@ -45,7 +45,12 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     }
 
     @Override
-    public ConcertSchedule saveSchdule(ConcertSchedule concertSchedule) {
+    public ConcertSchedule saveSchedule(ConcertSchedule concertSchedule) {
         return concertScheduleJPARepository.save(concertSchedule);
+    }
+
+    @Override
+    public Optional<Seat> findSeat(Long seatId) {
+        return seatJPARepository.findById(seatId);
     }
 }

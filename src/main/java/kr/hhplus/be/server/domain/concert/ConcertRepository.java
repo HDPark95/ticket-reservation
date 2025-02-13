@@ -13,5 +13,7 @@ public interface ConcertRepository {
     Optional<Seat> findSeatForUpdate(Long seatId);
 
     Seat saveSeat(Seat seat);
-    ConcertSchedule saveSchdule(ConcertSchedule concertSchedule);
+    ConcertSchedule saveSchedule(ConcertSchedule concertSchedule);
+
+    Optional<Seat> findSeat(Long seatId);
 }

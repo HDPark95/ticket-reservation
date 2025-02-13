@@ -51,7 +51,7 @@ public class PaymentConcurrencyTest {
         // given
         User user = userRepository.save(User.builder().name("박현두").phoneNumber("010123412236").point(BigDecimal.valueOf(10000)).build());
         Concert concert = concertRepository.save(Concert.builder().name("아이유 콘서트").build());
-        ConcertSchedule schedule = concertRepository.saveSchdule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
+        ConcertSchedule schedule = concertRepository.saveSchedule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
         Seat seat = concertRepository.saveSeat(Seat.builder().concertSchedule(schedule).seatNumber(1).price(BigDecimal.valueOf(10000L)).build());
         Reservation reservation = reservationRepository.save(
                 Reservation.builder()

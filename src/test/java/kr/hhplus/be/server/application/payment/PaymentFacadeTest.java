@@ -78,7 +78,7 @@ public class PaymentFacadeTest {
             schedule.addSeat(i, price);
         }
 
-        return concertRepository.saveSchdule(schedule);
+        return concertRepository.saveSchedule(schedule);
     }
 
     @Test

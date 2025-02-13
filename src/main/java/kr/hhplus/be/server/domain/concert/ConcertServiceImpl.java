@@ -27,7 +27,7 @@ public class ConcertServiceImpl implements ConcertService{
 
     @Override
     public Seat getSeat(Long seatId) {
-        return concertRepository.findSeatForUpdate(seatId)
+        return concertRepository.findSeat(seatId)
                 .orElseThrow(() -> new SeatNotFoundException("존재하지 않는 좌석입니다."));
     }
 }

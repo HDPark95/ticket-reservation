@@ -1,7 +1,6 @@
 package kr.hhplus.be.server.application.concert;
 
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.domain.concert.Concert;
 import kr.hhplus.be.server.domain.concert.ConcertRepository;
 import kr.hhplus.be.server.domain.concert.ConcertSchedule;
@@ -10,14 +9,10 @@ import kr.hhplus.be.server.domain.reservation.Reservation;
 import kr.hhplus.be.server.domain.reservation.ReservationRepository;
 import kr.hhplus.be.server.domain.user.User;
 import kr.hhplus.be.server.domain.user.UserRepository;
-import kr.hhplus.be.server.domain.waitingtoken.WaitingToken;
-import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenResult;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -58,7 +53,7 @@ public class ConcertConcurrencyTest {
                 userRepository.save(User.builder().name("박현두").phoneNumber("01012341236").build())
         );
         Concert concert = concertRepository.save(Concert.builder().name("아이유 콘서트").build());
-        ConcertSchedule schedule = concertRepository.saveSchdule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
+        ConcertSchedule schedule = concertRepository.saveSchedule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
         Seat seat = concertRepository.saveSeat(Seat.builder().concertSchedule(schedule).seatNumber(1).price(BigDecimal.valueOf(10000L)).build());
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         List<Callable<ConcertResult.ReservationResult>> tasks = new ArrayList<>();
