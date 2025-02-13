@@ -15,7 +15,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
 
     private final ReservationJPARepository reservationJPARepository;
     private final ReservationQuerydslRepository reservationQuerydslRepository;
-
+    private final ReservationRedisRepository reservationRedisRepository;
     @Override
     public List<Reservation> getValidReservationsByScheduleId(Long scheduleId, LocalDateTime now) {
         return reservationQuerydslRepository.getValidReservationsByScheduleId(scheduleId, now);
@@ -50,4 +50,15 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     public Optional<Reservation> findById(Long id) {
         return reservationQuerydslRepository.findById(id);
     }
+
+    @Override
+    public void addFailCompleteReservation(Long reservationId, Long now) {
+        reservationRedisRepository.addFailCompleteReservation(reservationId, now);
+    }
+
+    @Override
+    public List<Long> getFailCompleteReservationIds() {
+        return reservationRedisRepository.getFailCompleteReservationIds();
+    }
 }
+

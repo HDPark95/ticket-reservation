@@ -14,4 +14,5 @@ public interface UserService {
     User usePoint(Long userId, BigDecimal price);
 
     User addPoint(Long userId, BigDecimal amount);
+
 }

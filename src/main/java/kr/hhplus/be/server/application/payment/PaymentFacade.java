@@ -25,7 +25,7 @@ public class PaymentFacade {
     private final ConcertService concertService;
     private final WaitingTokenService waitingTokenService;
     private final ApplicationEventPublisher applicationEventPublisher;
-    @Transactional
+
     public PaymentResult pay(Long reservationId, Long userId) {
         Reservation reservation = reservationService.getReservation(reservationId, userId);
         Seat seat = concertService.getSeat(reservation.getSeatId());

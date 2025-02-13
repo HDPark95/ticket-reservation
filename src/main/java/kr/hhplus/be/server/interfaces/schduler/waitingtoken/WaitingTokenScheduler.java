@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces.schduler;
+package kr.hhplus.be.server.interfaces.schduler.waitingtoken;
 
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ public class WaitingTokenScheduler {
 
     private final WaitingTokenService tokenService;
 
-    @Scheduled(fixedDelay = 10000) // 10초마다 실행
+    @Scheduled(fixedDelay = 10000)
     public void checkWaitingToken() {
         tokenService.refreshWaitingTokens();
     }
