@@ -29,7 +29,7 @@ public class UserPointConcurrencyTest {
         // 사용자 생성
         user = userRepository.save(User.builder()
                 .name("박현두")
-                .phoneNumber("01012341234")
+                .phoneNumber("0101234111234")
                 .point(BigDecimal.ZERO)
                 .build());
     }

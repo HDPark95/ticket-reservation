@@ -53,7 +53,7 @@ public class ConcertConcurrencyTest {
     void reserveConcertSeat() throws InterruptedException {
         // given
         List<User> users = List.of(
-                userRepository.save(User.builder().name("박").phoneNumber("01012341234").build()),
+                userRepository.save(User.builder().name("박").phoneNumber("010122341234").build()),
                 userRepository.save(User.builder().name("박현").phoneNumber("01012341235").build()),
                 userRepository.save(User.builder().name("박현두").phoneNumber("01012341236").build())
         );

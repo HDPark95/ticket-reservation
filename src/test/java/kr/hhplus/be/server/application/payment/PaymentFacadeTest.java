@@ -88,7 +88,7 @@ public class PaymentFacadeTest {
         // given
         setMockClock();
 
-        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "01012341234");
+        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "01012312411234");
 
         Concert concert = createTestConcert("아이유 콘서트");
 
@@ -113,7 +113,7 @@ public class PaymentFacadeTest {
     @Transactional
     @DisplayName("결제 완료 처리시 존재하지 않는 예약 ID인 경우 ReservationNotFoundException 발생")
     public void completePaymentWithNonExistReservation() {
-        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "01012341234");
+        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "0101234111234");
         // given
         Long reservationId = 999L;
 
@@ -129,7 +129,7 @@ public class PaymentFacadeTest {
     public void completePaymentWithAlreadyPaidReservation() {
         // given
         setMockClock();
-        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "01012341231");
+        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "010121341231");
         Concert concert = createTestConcert("아이유 콘서트");
         ConcertSchedule schedule = createTestSchedule(concert, 50, BigDecimal.valueOf(10000L));
 
@@ -154,7 +154,7 @@ public class PaymentFacadeTest {
     public void completePaymentWithExpiredReservation() {
         // given
         setMockClock();
-        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "01012341232");
+        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "010123411232");
 
         Concert concert = createTestConcert("아이유 콘서트");
         ConcertSchedule schedule = createTestSchedule(concert, 50, BigDecimal.valueOf(10000L));

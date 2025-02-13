@@ -49,7 +49,7 @@ public class PaymentConcurrencyTest {
     @DisplayName("결제가 동시에 발생할 때 중복 결제가 발생하지 않는다.")
     void payConcurrently() throws InterruptedException {
         // given
-        User user = userRepository.save(User.builder().name("박현두").phoneNumber("01012341236").point(BigDecimal.valueOf(10000)).build());
+        User user = userRepository.save(User.builder().name("박현두").phoneNumber("010123412236").point(BigDecimal.valueOf(10000)).build());
         Concert concert = concertRepository.save(Concert.builder().name("아이유 콘서트").build());
         ConcertSchedule schedule = concertRepository.saveSchdule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
         Seat seat = concertRepository.saveSeat(Seat.builder().concertSchedule(schedule).seatNumber(1).price(BigDecimal.valueOf(10000L)).build());

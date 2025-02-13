@@ -11,11 +11,13 @@ import kr.hhplus.be.server.domain.reservation.ReservationRepository;
 import kr.hhplus.be.server.domain.reservation.ReservationStatus;
 import kr.hhplus.be.server.domain.user.User;
 import kr.hhplus.be.server.domain.user.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
@@ -48,15 +50,16 @@ public class ConcertFacadeTest {
 
         when(clock.instant()).thenReturn(fixedInstant);
         when(clock.getZone()).thenReturn(zoneId);
+        userRepository.deleteAll();
     }
-
     @Test
+    @Transactional
     @DisplayName("콘서트 예약 성공 - 결제 대기 ")
     void reserve() {
         // given
         setMockClock();
 
-        User user = userRepository.save(User.builder().name("박현두").phoneNumber("01012341234").build());
+        User user = userRepository.save(User.builder().name("박현두").phoneNumber("010123412364").build());
         Concert concert = concertRepository.save(Concert.builder().name("아이유 콘서트").build());
         ConcertSchedule schedule = concertRepository.saveSchdule(ConcertSchedule.builder().concert(concert).date(LocalDate.now()).build());
         Seat seat = concertRepository.saveSeat(Seat.builder().concertSchedule(schedule).seatNumber(1).price(BigDecimal.valueOf(10000L)).build());
@@ -79,7 +82,7 @@ public class ConcertFacadeTest {
         // given
         setMockClock();
 
-        User user = userRepository.save(User.builder().name("박현두").phoneNumber("01012341234").build());
+        User user = userRepository.save(User.builder().name("박현두").phoneNumber("010123412346").build());
         Concert concert = concertRepository.save(Concert.builder().name("아이유 콘서트").build());
         ConcertSchedule schedule = ConcertSchedule.builder().concert(concert).date(LocalDate.now(clock)).build();
 
@@ -111,7 +114,7 @@ public class ConcertFacadeTest {
         // given
         setMockClock();
 
-        User user = userRepository.save(User.builder().name("박현두").phoneNumber("01012341234").build());
+        User user = userRepository.save(User.builder().name("박현두").phoneNumber("010123412734").build());
         Concert concert = concertRepository.save(Concert.builder().name("아이유 콘서트").build());
         ConcertSchedule schedule = ConcertSchedule.builder().concert(concert).date(LocalDate.now(clock)).build();
 
