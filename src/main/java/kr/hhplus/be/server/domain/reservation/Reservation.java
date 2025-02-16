@@ -52,4 +52,8 @@ public class Reservation extends BaseEntity {
         }
         this.status = ReservationStatus.RESERVED;
     }
+
+    public void rollbackStatusToPending() {
+        this.status = ReservationStatus.PENDING;
+    }
 }

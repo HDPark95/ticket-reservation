@@ -81,4 +81,25 @@ public class ReservationTest {
         // then
         Assert.assertThrows(ReservationExpiredException.class, () -> reservation.reserved(reserveTime));
     }
+
+    @Test
+    @DisplayName("예약 완료 상태에서 예약 대기상태로 롤백 - PENDING 상태")
+    public void rollbackStatusToPending() {
+        // given
+        User user = User.builder().build();
+        Seat seat = Seat.builder().build();
+
+        LocalDateTime createdTime = LocalDateTime.of(2025, 1, 1, 12, 0, 0);
+        Reservation reservation = Reservation.createPending(user.getId(), seat.getId(), createdTime);
+        //만료 시간 - 20분 이후
+        LocalDateTime reserveTime = LocalDateTime.of(2025, 1, 1, 12, 20, 0);
+        reservation.reserved(reserveTime);
+
+        // when
+        reservation.rollbackStatusToPending();
+
+        // then
+        // 예약 대기 상태인가?
+        Assert.assertEquals(ReservationStatus.PENDING, reservation.getStatus());
+    }
 }

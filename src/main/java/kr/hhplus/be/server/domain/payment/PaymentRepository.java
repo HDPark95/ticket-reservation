@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.payment;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PaymentRepository {
 
@@ -14,4 +15,9 @@ public interface PaymentRepository {
 
     Long countByUserId(Long userId);
 
+    void addFailedPayment(Long reservationId, Long now);
+
+    List<Long> getFailedPaymentReservationIds();
+
+    Optional<Payment> findByReservationId(Long reservationId);
 }

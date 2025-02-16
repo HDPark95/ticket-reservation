@@ -10,4 +10,10 @@ public interface ReservationService {
     Reservation getReservation(Long reservationId, Long userId);
 
     void complete(Reservation reservation);
+
+    void rollbackReservationComplete(Long reservationId);
+
+    List<Long> getFailCompleteReservationIds();
+
+    void addFailCompleteReservation(Long reservationId);
 }

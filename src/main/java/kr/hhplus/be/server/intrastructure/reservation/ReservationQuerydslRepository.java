@@ -58,4 +58,16 @@ public class ReservationQuerydslRepository {
                         .fetchOne()
         );
     }
+
+    public Optional<Reservation> findById(Long id) {
+        return Optional.ofNullable(
+                jpaQueryFactory.selectFrom(reservation)
+                        .innerJoin(seat)
+                        .on(reservation.seatId.eq(seat.id)).fetchJoin()
+                        .innerJoin(seat.concertSchedule, concertSchedule).fetchJoin()
+                        .innerJoin(concertSchedule.concert).fetchJoin()
+                        .where(reservation.id.eq(id))
+                        .fetchOne()
+        );
+    }
 }

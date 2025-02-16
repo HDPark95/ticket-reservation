@@ -50,4 +50,5 @@ public class UserServiceImpl implements UserService{
         user.addPoint(amount);
         return user;
     }
+
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,8 +42,36 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     @Transactional
     public void complete(Reservation reservation) {
-        reservation.reserved(LocalDateTime.now(clock));
+        try {
+            reservation.reserved(LocalDateTime.now(clock));
+        } catch(AlreadyPaidReservationException | ReservationExpiredException e){
+            reservationRepository.addFailCompleteReservation(reservation.getId(), Instant.now(clock).toEpochMilli());
+            throw e;
+        }catch (Exception e) {
+            reservationRepository.addFailCompleteReservation(reservation.getId(), Instant.now(clock).toEpochMilli());
+            throw new ReservationCompleteFailException("예약 완료에 실패했습니다.");
+        }
+
     }
 
+    @Override
+    @Transactional
+    public void rollbackReservationComplete(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationNotFoundException("예약 정보가 없습니다."));
 
+        reservation.rollbackStatusToPending();
+        //롤백한 예약은 다시 실패한 예약으로 처리
+        reservationRepository.addFailCompleteReservation(reservationId, Instant.now(clock).toEpochMilli());
+    }
+
+    @Override
+    public List<Long> getFailCompleteReservationIds() {
+        return reservationRepository.getFailCompleteReservationIds();
+    }
+
+    @Override
+    public void addFailCompleteReservation(Long reservationId) {
+        reservationRepository.addFailCompleteReservation(reservationId, Instant.now(clock).toEpochMilli());
+    }
 }

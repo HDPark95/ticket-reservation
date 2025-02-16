@@ -10,6 +10,7 @@ import kr.hhplus.be.server.domain.reservation.ReservationService;
 import kr.hhplus.be.server.domain.user.UserService;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ public class PaymentFacade {
     private final UserService userService;
     private final ConcertService concertService;
     private final WaitingTokenService waitingTokenService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    @Transactional
     public PaymentResult pay(Long reservationId, Long userId) {
         Reservation reservation = reservationService.getReservation(reservationId, userId);
         Seat seat = concertService.getSeat(reservation.getSeatId());
@@ -38,6 +39,9 @@ public class PaymentFacade {
                 seat.getPrice()
         ));
         waitingTokenService.expireToken(reservation.getUserId());
+        applicationEventPublisher.publishEvent(
+                new PaymentCompleteEvent(reservationId, seat.getConcertSchedule().getDate(), seat.getId(),  seat.getPrice())
+        );
         return result;
     }
 
