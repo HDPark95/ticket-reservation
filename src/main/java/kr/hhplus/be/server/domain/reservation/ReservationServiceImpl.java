@@ -42,16 +42,7 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     @Transactional
     public void complete(Reservation reservation) {
-        try {
-            reservation.reserved(LocalDateTime.now(clock));
-        } catch(AlreadyPaidReservationException | ReservationExpiredException e){
-            reservationRepository.addFailCompleteReservation(reservation.getId(), Instant.now(clock).toEpochMilli());
-            throw e;
-        }catch (Exception e) {
-            reservationRepository.addFailCompleteReservation(reservation.getId(), Instant.now(clock).toEpochMilli());
-            throw new ReservationCompleteFailException("예약 완료에 실패했습니다.");
-        }
-
+        reservation.reserved(LocalDateTime.now(clock));
     }
 
     @Override

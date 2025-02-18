@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class PaymentFacade {
         Seat seat = concertService.getSeat(reservation.getSeatId());
         userService.usePoint(reservation.getUserId(), seat.getPrice());
         reservationService.complete(reservation);
-        PaymentResult result = paymentService.make(new PaymentCommand(
+        PaymentResult result = paymentService.create(new PaymentCommand(
                 reservation.getUserId(),
                 reservation.getId(),
                 seat.getConcertSchedule().getDate(),
