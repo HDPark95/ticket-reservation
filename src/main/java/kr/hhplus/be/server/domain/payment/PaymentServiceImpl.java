@@ -21,21 +21,15 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional
-    public PaymentResult make(PaymentCommand command) {
-        try{
-            Payment payment = paymentRepository.save(Payment.create(
-                    command.userId(),
-                    command.reservationId(),
-                    command.concertDate(),
-                    command.seatNumber(),
-                    command.price()
-            ));
-            return PaymentResult.from(payment);
-        }catch (Exception e){
-            paymentRepository.addFailedPayment(command.reservationId(), Instant.now(clock).toEpochMilli());
-            throw new PaymentFailedException("결제 내역 저장에 실패했습니다.");
-        }
-
+    public PaymentResult create(PaymentCommand command) {
+        Payment payment = paymentRepository.save(Payment.create(
+                command.userId(),
+                command.reservationId(),
+                command.concertDate(),
+                command.seatNumber(),
+                command.price()
+        ));
+        return PaymentResult.from(payment);
     }
 
     @Override
