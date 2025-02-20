@@ -20,4 +20,7 @@ public interface PaymentService {
     void putPaymentCompleteMessageToOutbox(Long paymentId);
 
     void updatePaymentCompleteMessageStatus(List<Long> paymentIds, PaymentCompleteOutbox.Status status);
+
+    void resendPendingMessage();
+
 }

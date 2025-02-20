@@ -84,4 +84,10 @@ public class PaymentServiceImpl implements PaymentService{
     public void updatePaymentCompleteMessageStatus(List<Long> paymentIds, PaymentCompleteOutbox.Status status) {
         paymentRepository.updateOutboxStatus(paymentIds, status);
     }
+    private final PaymentMessageProducer paymentMessageProducer;
+    @Override
+    public void resendPendingMessage() {
+        List<Long> pendingPaymentIds = paymentRepository.getPendingPaymentIds();
+        pendingPaymentIds.forEach(paymentMessageProducer::publishPaymentComplete);
+    }
 }

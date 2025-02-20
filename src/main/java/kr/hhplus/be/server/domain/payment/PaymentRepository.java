@@ -20,4 +20,11 @@ public interface PaymentRepository {
     List<Long> getFailedPaymentReservationIds();
 
     Optional<Payment> findByReservationId(Long reservationId);
+
+    void saveOutbox(PaymentCompleteOutbox message);
+
+    void updateOutboxStatus(List<Long> paymentIds, PaymentCompleteOutbox.Status status);
+
+    List<Long> getPendingPaymentIds();
+
 }
