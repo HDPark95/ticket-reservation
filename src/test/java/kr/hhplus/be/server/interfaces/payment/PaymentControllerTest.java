@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.interfaces.payment;
 
-import kr.hhplus.be.server.application.payment.PaymentResult;
+import kr.hhplus.be.server.domain.payment.PaymentResult;
+import kr.hhplus.be.server.domain.payment.PaymentService;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public class PaymentControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    public PaymentFacade paymentFacade;
+    public PaymentService paymentService;
 
     @MockitoBean
     private WaitingTokenService waitingTokenService;
@@ -40,7 +41,7 @@ public class PaymentControllerTest {
         Long userId = 1L;
         when(waitingTokenService.isValid(anyString())).thenReturn(true);
         when(waitingTokenService.getUserId(anyString())).thenReturn(userId);
-        when(paymentFacade.pay(any(), any())).thenReturn(
+        when(paymentService.pay(any(), any())).thenReturn(
                 new PaymentResult(1L, BigDecimal.valueOf(10000), LocalDate.parse("2025-01-20"), 1)
         );
         mockMvc.perform(post("/api/v1/payments")

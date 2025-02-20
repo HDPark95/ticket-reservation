@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.interfaces.api.payment;
 
-import kr.hhplus.be.server.application.payment.PaymentResult;
+import kr.hhplus.be.server.domain.payment.PaymentResult;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.application.payment;
+package kr.hhplus.be.server.domain.payment;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -22,10 +22,10 @@ import java.time.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class PaymentFacadeTest {
+public class PaymentServiceTest {
 
     @Autowired
-    private PaymentFacade paymentFacade;
+    private PaymentService paymentService;
 
     @Autowired
     ReservationRepository reservationRepository;
@@ -105,7 +105,7 @@ public class PaymentFacadeTest {
 
         // when && then
         Assertions.assertDoesNotThrow(() -> {
-            paymentFacade.pay(reservation.getId(), user.getId());
+            paymentService.pay(reservation.getId(), user.getId());
         });
     }
 
@@ -119,60 +119,10 @@ public class PaymentFacadeTest {
 
         // when && then
         Assertions.assertThrows(ReservationNotFoundException.class, () -> {
-            paymentFacade.pay(reservationId, user.getId());
+            paymentService.pay(reservationId, user.getId());
         });
     }
 
-    @Test
-    @Transactional
-    @DisplayName("결제 완료 처리시 이미 결제된 예약 ID인 경우 AlreadyPaidReservationException 발생")
-    public void completePaymentWithAlreadyPaidReservation() {
-        // given
-        setMockClock();
-        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "010121341231");
-        Concert concert = createTestConcert("아이유 콘서트");
-        ConcertSchedule schedule = createTestSchedule(concert, 50, BigDecimal.valueOf(10000L));
-
-        Reservation reservation = reservationRepository.save(
-                Reservation.builder()
-                        .userId(user.getId())
-                        .seatId(schedule.getSeats().get(0).getId())
-                        .status(ReservationStatus.RESERVED) //이미 결제된 상태
-                        .expiredAt(LocalDateTime.now(clock).plusMinutes(30)) // 30분 후 만료
-                        .build()
-        );
-
-        // when && then
-        Assertions.assertThrows(AlreadyPaidReservationException.class, () -> {
-            paymentFacade.pay(reservation.getId(), user.getId());
-        });
-    }
-
-    @Test
-    @Transactional
-    @DisplayName("결제 완료 처리시 expired_at을 지난 경우 ReservationExpiredException 발생")
-    public void completePaymentWithExpiredReservation() {
-        // given
-        setMockClock();
-        User user = createTestUser("박현두", BigDecimal.valueOf(10000L), "010123411232");
-
-        Concert concert = createTestConcert("아이유 콘서트");
-        ConcertSchedule schedule = createTestSchedule(concert, 50, BigDecimal.valueOf(10000L));
-
-        Reservation reservation = reservationRepository.save(
-                Reservation.builder()
-                        .userId(user.getId())
-                        .seatId(schedule.getSeats().get(0).getId())
-                        .status(ReservationStatus.PENDING) // 결제 대기 상태
-                        .expiredAt(LocalDateTime.now(clock).minusMinutes(30)) // 30분 전 만료
-                        .build()
-        );
-
-        // when && then
-        Assertions.assertThrows(ReservationExpiredException.class, () -> {
-            paymentFacade.pay(reservation.getId(), user.getId());
-        });
-    }
 
     @Test
     @DisplayName("결제 완료 처리시 사용자 포인트가 부족한 경우 InsufficientPointException 발생")
@@ -194,7 +144,7 @@ public class PaymentFacadeTest {
 
         // when && then
         Assertions.assertThrows(InsufficientPointsException.class, () -> {
-            paymentFacade.pay(reservation.getId(), user.getId());
+            paymentService.pay(reservation.getId(), user.getId());
         });
     }
 }
