@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.intrastructure.reservation;
+package kr.hhplus.be.server.infrastructure.reservation;
 
 import kr.hhplus.be.server.domain.reservation.Reservation;
 import kr.hhplus.be.server.domain.reservation.ReservationRepository;

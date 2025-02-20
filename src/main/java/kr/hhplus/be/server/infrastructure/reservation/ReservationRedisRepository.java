@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.intrastructure.reservation;
+package kr.hhplus.be.server.infrastructure.reservation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

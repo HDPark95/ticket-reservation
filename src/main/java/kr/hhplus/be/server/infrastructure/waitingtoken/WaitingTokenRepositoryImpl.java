@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.intrastructure.waitingtoken;
+package kr.hhplus.be.server.infrastructure.waitingtoken;
 
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenRepository;
 import lombok.RequiredArgsConstructor;

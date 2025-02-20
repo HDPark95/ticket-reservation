@@ -1,15 +1,11 @@
-package kr.hhplus.be.server.intrastructure.user;
+package kr.hhplus.be.server.infrastructure.user;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.LockModeType;
 import kr.hhplus.be.server.domain.user.User;
 import kr.hhplus.be.server.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-
-import static kr.hhplus.be.server.domain.user.QUser.user;
 
 @Repository
 @RequiredArgsConstructor

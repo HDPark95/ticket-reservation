@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.domain.user.User;
 import kr.hhplus.be.server.domain.user.UserNotFoundException;
 import kr.hhplus.be.server.domain.user.UserService;
-import kr.hhplus.be.server.intrastructure.redis.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

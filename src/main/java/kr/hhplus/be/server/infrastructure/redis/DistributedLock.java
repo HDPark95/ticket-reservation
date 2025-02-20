@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.intrastructure.redis;
+package kr.hhplus.be.server.infrastructure.redis;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

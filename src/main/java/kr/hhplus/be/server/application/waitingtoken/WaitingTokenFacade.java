@@ -1,11 +1,9 @@
 package kr.hhplus.be.server.application.waitingtoken;
 
-import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.domain.user.UserResult;
 import kr.hhplus.be.server.domain.user.UserService;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenResult;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenService;
-import kr.hhplus.be.server.intrastructure.redis.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

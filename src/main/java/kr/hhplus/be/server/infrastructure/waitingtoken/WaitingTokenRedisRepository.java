@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.intrastructure.waitingtoken;
+package kr.hhplus.be.server.infrastructure.waitingtoken;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

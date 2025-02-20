@@ -1,10 +1,8 @@
-package kr.hhplus.be.server.intrastructure.concert;
+package kr.hhplus.be.server.infrastructure.concert;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
 import kr.hhplus.be.server.domain.concert.ConcertSchedule;
-import kr.hhplus.be.server.domain.concert.QConcertSchedule;
-import kr.hhplus.be.server.domain.concert.QSeat;
 import kr.hhplus.be.server.domain.concert.Seat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
