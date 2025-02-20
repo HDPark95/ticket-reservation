@@ -1,11 +1,9 @@
 package kr.hhplus.be.server.interfaces.api.payment;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import kr.hhplus.be.server.application.payment.PaymentFacade;
 import kr.hhplus.be.server.application.payment.PaymentResult;
+import kr.hhplus.be.server.domain.payment.PaymentService;
 import kr.hhplus.be.server.interfaces.handler.TokenUserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/payments")
 public class PaymentController {
 
-    private final PaymentFacade paymentFacade;
+    private final PaymentService paymentService;
 
     @PostMapping
     @Operation(summary = "결제", description = "결제를 진행합니다.", tags={ "payments" })
     public ResponseEntity<PaymentResponse> pay(@RequestBody @Valid PaymentRequest.pay request, @TokenUserId Long userId) {
-        PaymentResult pay = paymentFacade.pay(request.reservationId(), userId);
-        return ResponseEntity.ok(PaymentResponse.from(pay));
+        //PaymentResult pay = paymentService.pay(request.reservationId(), userId);
+        //return ResponseEntity.ok(PaymentResponse.from(pay));
+        return null;
     }
 }

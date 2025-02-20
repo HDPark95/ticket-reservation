@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.interfaces.payment;
 
-import kr.hhplus.be.server.application.payment.PaymentFacade;
 import kr.hhplus.be.server.application.payment.PaymentResult;
 import kr.hhplus.be.server.domain.waitingtoken.WaitingTokenService;
 import org.junit.jupiter.api.DisplayName;
