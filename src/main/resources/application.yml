@@ -22,6 +22,22 @@ spring:
       hibernate.jdbc.time_zone: UTC
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+  kafka:
+    bootstrap-servers:
+      - localhost:10000
+      - localhost:10001
+      - localhost:10002
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      auto-offset-reset: latest
+    producer:
+      key-serializer:  org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 5
+    listener:
+      type: batch
+      ack-mode: manual
 springdoc:
   api-docs:
     path: /api-docs/json
@@ -39,7 +55,19 @@ management:
       exposure:
         include: "*"
 ---
-spring.config.activate.on-profile: local, test
+spring.config.activate.on-profile: local
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
+    username: application
+    password: application
+
+---
+spring.config.activate.on-profile: test
 
 spring:
   jpa:
@@ -50,4 +78,3 @@ spring:
     username: application
     password: application
 
-    
